@@ -34,4 +34,13 @@ sort.Ints(highScores)
 fmt.Println(highScores)
 fmt.Println(sort.IntsAreSorted(highScores))
 
+// Remove values from slices based on index
+
+var courses=[]string{"java","html","js","php"}
+var indexToRemove int =2
+// courses = append(courses[:indexToRemove], courses[indexToRemove+1]) //easier syntax
+courses = append(courses[:indexToRemove], courses[indexToRemove+1:]...) //same work as above statement but with the ... notation, it spreads the elements of that slice as individual arguments to the append function.This also creates a new slice with the remaining elements after removing the element at the indexToRemove position, but it uses a slightly different syntax to achieve the same result.
+ 
+fmt.Println(courses)
+
 }
