@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	reader := bufio.NewReader(os.Stdin)
+	reader := bufio.NewReader(os.Stdin) //initialising or we can say setting up input from user functionality
 	fmt.Println("do rate our service")
 
 	//comma ok || err err
