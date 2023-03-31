@@ -16,4 +16,10 @@ func main() {
 	fmt.Println("languages in map", languages)
 	fmt.Println("languages in map", languages["JS"])
 
+//delete with id as "rb" is id in below case
+
+delete(languages,"rb")
+fmt.Println("languages in map", languages)
+
+
 }
