@@ -21,4 +21,23 @@ func main() {
 	for index, day := range days{ //when we use range it returns two values "index of current element and value of current element"
 		fmt.Printf("index is %v, and day is %v\n",index,day)
 	}
+
+	//goto
+
+	rougueValue:=1
+	for rougueValue <10{
+		if rougueValue==4 {
+			goto gotoLabel
+			
+		}
+		if rougueValue ==9{
+			rougueValue++
+			continue
+		}
+		fmt.Println("value is:",rougueValue)
+		rougueValue++
+	}
+
+	gotoLabel:
+	fmt.Println("this is a goto label")
 }
