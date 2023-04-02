@@ -22,4 +22,17 @@ if err != nil{
 }
 fmt.Println("length is: ",length)
 defer file.Close()
+
+// call readFile
+
+readFile("./myCustomGoFile.txt")
+}
+
+func readFile(fileName string)  {
+	dataByte,err := os.ReadFile(fileName)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(string(dataByte))
 }
