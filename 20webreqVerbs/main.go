@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 func main() {
@@ -23,6 +24,10 @@ func PerformGetRequest()  {
 	fmt.Println(response.StatusCode)
 	fmt.Println(response.ContentLength)
 
+	var responseString strings.Builder
+
 content,_:=ioutil.ReadAll(response.Body)
-fmt.Println(string(content))
+byteCount,_:=responseString.Write(content)
+fmt.Println(byteCount)
+fmt.Println(responseString.String())
 }
