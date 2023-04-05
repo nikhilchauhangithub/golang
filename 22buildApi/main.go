@@ -3,7 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -31,7 +34,8 @@ var courses []Course
 
 func (c *Course) IsEmpty() bool {
 	//middleware
-	return c.CourseId == "" && c.CourseName == ""
+	// return c.CourseId == "" && c.CourseName == ""
+	return c.CourseName == ""
 }
 
 //controller file
@@ -62,4 +66,30 @@ func getOneCourse(w http.ResponseWriter, r *http.Request)  {
 		}
 	}
 	json.NewEncoder(w).Encode(fmt.Sprintf("No such course found with given id:%v\n",params["id"]))
+}
+
+func createOneCourse(w http.ResponseWriter, r *http.Request)  {
+	fmt.Println("create one course")
+	w.Header().Set("Content-type", "application/json")
+
+	//what if body is empty
+	if r.Body==nil {
+		json.NewEncoder(w).Encode("Empty field is not accepted")
+	}
+
+	//what if we got {}
+
+	var course Course //This code block appears to be decoding JSON data from an HTTP request body into a Course struct, and then checking if the decoded Course instance is empty. If the Course is empty, the code block sends a response to the HTTP client indicating that no data was sent.
+	json.NewDecoder(r.Body).Decode(&course)//By passing &course to the Decode() method, the method can decode the JSON data and store the resulting Course struct instance directly into the original course variable, which can then be used in subsequent code.
+	if course.IsEmpty(){
+		json.NewEncoder(w).Encode("send some data")
+		return
+	}
+	//generate unique id, then convert it to string
+
+	rand.Seed(time.Now().UnixNano())
+	course.CourseId=strconv.Itoa(rand.Intn(100))
+	courses =append(courses, course)
+	json.NewEncoder(w).Encode(course)
+	return
 }
