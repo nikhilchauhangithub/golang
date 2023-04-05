@@ -115,3 +115,20 @@ return
 		}
 	}
 }
+
+func deleteOneCourse(w http.ResponseWriter, r *http.Request)  {
+	fmt.Println("Update one course")
+	w.Header().Set("Content-Type", "application/json")
+	params :=mux.Vars(r)
+
+	//loop, id, remove id (:index, index+1)
+	 
+	for index, course := range courses{
+		if course.CourseId==params["id"] {
+			courses =append(courses[:index], courses[index+1:]...)
+		}
+		break
+		
+
+	}
+}
