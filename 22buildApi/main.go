@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -12,7 +13,23 @@ import (
 )
 
 func main() {
+fmt.Println("Api in Golang")
+r :=mux.NewRouter()
 
+//seeding
+courses =append(courses, Course{CourseId: "17",CourseName: "Golang", CoursePrice: 1000, Author: &Author{Fullname: "Nikhil Chauhan",Website: "github.com"}})
+
+//routing
+
+r.HandleFunc("/",serveHome).Methods("GET")
+r.HandleFunc("/courses",getAllCourses).Methods("GET")
+r.HandleFunc("/course/{id}",getOneCourse).Methods("GET")
+r.HandleFunc("/course",createOneCourse).Methods("POST")
+r.HandleFunc("/course/{id}",updateOneCourse).Methods("PUT")
+r.HandleFunc("/courses/{id}",deleteOneCourse).Methods("DELETE")
+
+//listen to a port
+log.Fatal(http.ListenAndServe(":4000",r))
 }
 
 //Model for course-file
@@ -128,7 +145,6 @@ func deleteOneCourse(w http.ResponseWriter, r *http.Request)  {
 			courses =append(courses[:index], courses[index+1:]...)
 		}
 		break
-		
-
-	}
+		}
+		json.NewEncoder(w).Encode("course deleted successfully")
 }
