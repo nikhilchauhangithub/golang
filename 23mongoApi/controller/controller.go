@@ -6,6 +6,8 @@ import (
 	"log"
 
 	"github.com/nikhilchauhangithub/mongoApi/model"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -51,4 +53,18 @@ func insertOneMovie(movie model.Netflix)  {
 	}
 
 	fmt.Println("Inserted one movie in db with id:", inserted.InsertedID)
+}
+
+//update one record
+
+func updateOneMovie(movieId string)  {
+	id,_:=primitive.ObjectIDFromHex(movieId)
+	filter:=bson.M{"_id":id}
+	update:= bson.M{"$set":bson.M{"watched":true}}
+
+	result,err:= collection.UpdateOne(context.Background(),filter,update)
+	if err!=nil {
+		log.Fatal(err)
+	}
+	fmt.Println("modified count: ",result.ModifiedCount) //The result.ModifiedCount field contains the number of documents that were successfully modified by the update operation. In this case, since we are updating only one document, the ModifiedCount field should have a value of either 0 or 1.
 }
