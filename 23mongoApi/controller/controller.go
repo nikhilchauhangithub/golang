@@ -68,3 +68,25 @@ func updateOneMovie(movieId string)  {
 	}
 	fmt.Println("modified count: ",result.ModifiedCount) //The result.ModifiedCount field contains the number of documents that were successfully modified by the update operation. In this case, since we are updating only one document, the ModifiedCount field should have a value of either 0 or 1.
 }
+
+func deleteOneMovie(movieId string)  {
+	id,_:=primitive.ObjectIDFromHex(movieId)
+	filter:=bson.M{"$_id":id}
+	deleteCount, err:=collection.DeleteOne(context.Background(),filter)
+	if err!=nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Movie to delete on delete count",deleteCount)
+}
+
+//delete all records from mongoDb
+
+func deleteAllMovie() int64  {
+	filter:=bson.D{{}}
+	deleteResult, err:= collection.DeleteMany(context.Background(),filter,nil)
+	if err!=nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Number of movies to be delete",deleteResult.DeletedCount)
+	return deleteResult.DeletedCount
+}
