@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/nikhilchauhangithub/mongoApi/model"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -35,4 +36,19 @@ func init()  {
 
 	//collection instance
 	fmt.Println("connection instance is ready")
+}
+
+
+//Mongodb helpers
+
+//insert one movie
+
+func insertOneMovie(movie model.Netflix)  {
+	inserted, err := collection.InsertOne(context.Background(),movie)
+
+	if err!=nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Inserted one movie in db with id:", inserted.InsertedID)
 }
