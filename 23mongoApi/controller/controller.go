@@ -2,8 +2,10 @@ package controller
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/nikhilchauhangithub/mongoApi/model"
 	"go.mongodb.org/mongo-driver/bson"
@@ -117,4 +119,10 @@ return movies //It uses the Find method on a MongoDB collection to retrieve all 
 //It appends the decoded document to the movies slice.
 //Once all documents have been retrieved and appended to the movies slice, it returns the slice.
 
+}
+
+func GetAllMovies(w http.ResponseWriter, r *http.Request)  { //we re exporting it so first letter is capital
+	w.Header().Set("Content-Type", "application/x-www-form-urlencode") //The function uses the w object to set the Content-Type header of the HTTP response to application/x-www-form-urlencoded. This indicates that the response data will be in a URL-encoded format.
+	allMovies:=getAllMovies()
+	json.NewEncoder(w).Encode(allMovies)//this function is intended to handle an HTTP request for getting all movies and returning them in JSON format.
 }
