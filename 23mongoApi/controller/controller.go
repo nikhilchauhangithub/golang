@@ -90,3 +90,31 @@ func deleteAllMovie() int64  {
 	fmt.Println("Number of movies to be delete",deleteResult.DeletedCount)
 	return deleteResult.DeletedCount
 }
+
+func getAllMovies() []primitive.M {
+	cur,err:= collection.Find(context.Background(),bson.D{{}})
+if err!=nil {
+	log.Fatal(err)
+}
+defer cur.Close(context.Background())
+var movies []primitive.M
+
+for cur.Next(context.Background()){
+	var movie bson.M
+	err:=cur.Decode(&movie)
+	if err!=nil {
+		log.Fatal(err)
+	}
+	movies = append(movies, movie)
+}
+return movies //It uses the Find method on a MongoDB collection to retrieve all documents (bson.D{{}} represents an empty filter, which matches all documents).
+//It checks for any errors that occurred during the Find operation, and if there was an error, it logs it and exits the function with a fatal error.
+//It defers the closing of the MongoDB cursor (defer cur.Close(context.Background())) to ensure that the cursor is closed when the function finishes execution.
+//It creates an empty slice ([]primitive.M) to hold the retrieved documents.
+//It loops through the cursor with cur.Next(context.Background()), which returns true if there is another document to be read.
+//For each document, it decodes it into a bson.M struct.
+//If there was an error during decoding, it logs it and exits the function with a fatal error.
+//It appends the decoded document to the movies slice.
+//Once all documents have been retrieved and appended to the movies slice, it returns the slice.
+
+}
