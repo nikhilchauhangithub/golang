@@ -140,7 +140,7 @@ func CreateMovie(w http.ResponseWriter, r *http.Request)  {
 
 func MarkAsWatched(w http.ResponseWriter, r *http.Request)  {
 	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
-	w.Header().Set("Allow-Control-Allow-Methods", "POST")
+	w.Header().Set("Allow-Control-Allow-Methods", "PUT")
 
 	params:=mux.Vars(r)//Then, the function uses the mux.Vars function from the gorilla/mux package to extract the value of the id parameter from the HTTP request URL. This parameter is likely used to identify the movie that the user has marked as watched.
 
@@ -151,4 +151,23 @@ func MarkAsWatched(w http.ResponseWriter, r *http.Request)  {
 //Later, when the system retrieves information about the movie, it could use the value of the "watched" field to determine whether the movie has been watched or not.
 
 
+}
+
+
+func DeleteAMovie(w http.ResponseWriter, r *http.Request)  {
+	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
+	w.Header().Set("Allow-Control-Allow-Methods", "DELETE")
+
+	params:=mux.Vars(r)
+	deleteOneMovie(params["id"])
+	json.NewEncoder(w).Encode(params["id"])
+}
+
+func DeleteAllMovies(w http.ResponseWriter, r *http.Request)  {
+	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
+	w.Header().Set("Allow-Control-Allow-Methods", "DELETE")
+
+	
+	count:=deleteAllMovie() //no id required it it is going to delete all moview, i reapeat everything
+	json.NewEncoder(w).Encode(count)
 }
