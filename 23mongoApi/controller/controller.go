@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/nikhilchauhangithub/mongoApi/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -125,4 +126,29 @@ func GetAllMovies(w http.ResponseWriter, r *http.Request)  { //we re exporting i
 	w.Header().Set("Content-Type", "application/x-www-form-urlencode") //The function uses the w object to set the Content-Type header of the HTTP response to application/x-www-form-urlencoded. This indicates that the response data will be in a URL-encoded format.
 	allMovies:=getAllMovies()
 	json.NewEncoder(w).Encode(allMovies)//this function is intended to handle an HTTP request for getting all movies and returning them in JSON format.
+}
+
+func CreateMovie(w http.ResponseWriter, r *http.Request)  {
+	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
+	w.Header().Set("Allow-Control-Allow-Methods", "POST")
+
+	var movie model.Netflix
+	_= json.NewDecoder(r.Body).Decode(&movie)//The Decode(&movie) method is then called on the decoder object with &movie as its argument. The & before movie creates a pointer to the movie variable, which is used as the destination for the decoded data. The _ before the assignment is used to discard the error value returned by Decode() method.
+	insertOneMovie(movie)
+	json.NewEncoder(w).Encode(movie)
+}
+
+func MarkAsWatched(w http.ResponseWriter, r *http.Request)  {
+	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
+	w.Header().Set("Allow-Control-Allow-Methods", "POST")
+
+	params:=mux.Vars(r)//Then, the function uses the mux.Vars function from the gorilla/mux package to extract the value of the id parameter from the HTTP request URL. This parameter is likely used to identify the movie that the user has marked as watched.
+
+	updateOneMovie(params["id"])//The updateOneMovie(params["id"]) function is called to update the status of the movie with the given ID in some data source (presumably a database or API).
+	json.NewEncoder(w).Encode(params["id"])//the json.NewEncoder(w).Encode(params["id"]) line encodes the id parameter as a JSON response and writes it to the HTTP response using the w object. This indicates that the movie with the given ID has been successfully marked as watched and returns the ID of the watched movie as a JSON response.
+	//when the updateOneMovie function is called with the ID of the movie that was just marked as watched, it could update the "watched" field for that movie in the data source to true (or some other value indicating that it has been watched).
+
+//Later, when the system retrieves information about the movie, it could use the value of the "watched" field to determine whether the movie has been watched or not.
+
+
 }
